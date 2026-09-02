@@ -1,0 +1,5 @@
+Flask
+openai 
+playwright 
+python-dotenv
+pillow

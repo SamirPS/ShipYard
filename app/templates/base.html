@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Shipyard{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="{{ url_for('dashboard') }}" aria-label="Shipyard dashboard">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          Shipyard
+        </a>
+        <span class="environment">Developer Cloud</span>
+      </div>
+    </header>
+    <main class="page-shell">
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

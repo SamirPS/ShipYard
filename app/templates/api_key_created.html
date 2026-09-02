@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}API key created · Shipyard{% endblock %}
+
+{% block content %}
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="{{ url_for('dashboard') }}">Projects</a>
+    <span aria-hidden="true">/</span>
+    <a href="{{ url_for('project_overview', slug=project.slug) }}">{{ project.name }}</a>
+    <span aria-hidden="true">/</span>
+    <a href="{{ url_for('api_keys', slug=project.slug) }}">API Keys</a>
+    <span aria-hidden="true">/</span>
+    <span>Created</span>
+  </nav>
+
+  <section class="card narrow-card">
+    <span class="success-check" aria-hidden="true">✓</span>
+    <h1>API key created</h1>
+    <p class="muted">Created just now</p>
+    <div class="copy-control">
+      <label for="created-key">API key</label>
+      <input id="created-key" type="text" readonly value="{{ api_key }}" aria-describedby="copy-help">
+      <p id="copy-help">Select the key above and copy it.</p>
+    </div>
+    <a class="button button-primary" href="{{ url_for('api_keys', slug=project.slug) }}">Done</a>
+  </section>
+{% endblock %}

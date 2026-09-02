@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.name }} · Shipyard{% endblock %}
+
+{% block content %}
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="{{ url_for('dashboard') }}">Projects</a>
+    <span aria-hidden="true">/</span>
+    <span>{{ project.name }}</span>
+  </nav>
+
+  <div class="project-heading">
+    <div>
+      <p class="eyebrow">Project</p>
+      <h1>{{ project.name }}</h1>
+    </div>
+    <span class="badge badge-success">Running</span>
+  </div>
+
+  <nav class="tabs" aria-label="Project sections">
+    <a href="{{ url_for('project_overview', slug=project.slug) }}" {% if section == 'overview' %}aria-current="page"{% endif %}>Overview</a>
+    <a href="{{ url_for('api_keys', slug=project.slug) }}" {% if section == 'api_keys' %}aria-current="page"{% endif %}>API Keys</a>
+    <a href="{{ url_for('deployments', slug=project.slug) }}" {% if section == 'deployments' %}aria-current="page"{% endif %}>Deployments</a>
+  </nav>
+
+  {% if section == "overview" %}
+    <section class="card">
+      <h2>Overview</h2>
+      <dl class="details-grid">
+        <div><dt>Runtime</dt><dd>Python</dd></div>
+        <div><dt>Region</dt><dd>Paris</dd></div>
+        <div><dt>Status</dt><dd><span class="badge badge-success">Running</span></dd></div>
+        <div class="detail-wide">
+          <dt>Endpoint</dt>
+          <dd><a href="https://{{ project.slug }}.shipyard.dev">https://{{ project.slug }}.shipyard.dev</a></dd>
+        </div>
+      </dl>
+    </section>
+  {% elif section == "api_keys" %}
+    <section class="card">
+      <div class="section-heading">
+        <div>
+          <h2>API Keys</h2>
+          <p>Use API keys to authenticate with Shipyard.</p>
+        </div>
+        {% if not active_api_key %}
+          <form method="post" action="{{ url_for('generate_api_key', slug=project.slug) }}">
+            <button class="button button-primary" type="submit">Generate new key</button>
+          </form>
+        {% endif %}
+      </div>
+
+      {% if active_api_key %}
+        <div class="key-summary">
+          <div>
+            <strong>1 active key</strong>
+            <code class="masked-key">{{ active_api_key.masked }}</code>
+            <span class="muted">{{ active_api_key.created }}</span>
+          </div>
+          <form method="post" action="{{ url_for('revoke_api_key', slug=project.slug) }}">
+            <button class="button button-danger" type="submit">Revoke</button>
+          </form>
+        </div>
+      {% else %}
+        <div class="inline-empty">
+          <strong>No API keys</strong>
+          <span class="muted">Generate a key to get started.</span>
+        </div>
+      {% endif %}
+    </section>
+  {% elif section == "deployments" %}
+    <section class="card">
+      <div class="section-heading">
+        <div>
+          <h2>Deployments</h2>
+          <p>Production</p>
+        </div>
+        <span class="badge badge-success">Deployed successfully</span>
+      </div>
+      <div class="deployment-row">
+        <div>
+          <strong>Latest deployment</strong>
+          <span class="muted">{{ deployment_date }}</span>
+        </div>
+        <a class="button button-secondary" href="{{ url_for('deployment_logs', slug=project.slug) }}">View logs</a>
+      </div>
+    </section>
+  {% endif %}
+{% endblock %}

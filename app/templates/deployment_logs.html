@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Deployment logs · Shipyard{% endblock %}
+
+{% block content %}
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="{{ url_for('dashboard') }}">Projects</a>
+    <span aria-hidden="true">/</span>
+    <a href="{{ url_for('project_overview', slug=project.slug) }}">{{ project.name }}</a>
+    <span aria-hidden="true">/</span>
+    <a href="{{ url_for('deployments', slug=project.slug) }}">Deployments</a>
+    <span aria-hidden="true">/</span>
+    <span>Latest logs</span>
+  </nav>
+
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">Latest deployment</p>
+      <h1>Deployment logs</h1>
+    </div>
+    <span class="badge badge-success">Deployed successfully</span>
+  </div>
+
+  <section class="card logs-card">
+    <pre aria-label="Deployment log output">14:32:01 Build started
+14:32:03 Installing dependencies
+14:32:08 Starting application
+14:32:09 Server listening on port 8080
+14:32:10 Deployment successful</pre>
+  </section>
+
+  <a class="button button-secondary" href="{{ url_for('deployments', slug=project.slug) }}">Back to deployments</a>
+{% endblock %}
